@@ -5,25 +5,25 @@ from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///financial.db'
-app.config['SQLALCHEMY_BINDS'] = {"users":'sqlite:///users.db'}
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
+app.config['SQLALCHEMY_BINDS'] = {"financial":'sqlite:///financial.db'}
 db = SQLAlchemy(app)
 
+class users(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(255), nullable=False)
+    password = db.Column(db.String(15), nullable=False)
+
+    def __repr__(self):
+        return '<Task %r> % self.id'
+        
 class financial(db.Model):
+    _bind_key_ = 'financial' 
     id = db.Column(db.Integer, primary_key=True)
     status = db.Column(db.String(255), nullable=False)
     money = db.Column(db.Integer, nullable=False)
     time = db.Column(db.Time, nullable=False)
     date = db.Column(db.Date, nullable=False)
-
-    def __repr__(self):
-        return '<Task %r> % self.id'
-
-class users(db.Model):
-    _bind_key_ = 'users' 
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(255), nullable=False)
-    password = db.Column(db.String(15), nullable=False)
 
     def __repr__(self):
         return '<Task %r> % self.id'
@@ -40,7 +40,7 @@ def page_not_found(e):
 def Internal_error(e):
     return render_template('500.html'), 500
 
-    
+    v
 
 if __name__ == '__main__':
     app.run(debug=True)
