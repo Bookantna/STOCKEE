@@ -10,11 +10,17 @@
             <a class="nav-link" href="{{url_for('user',name = 'Taron')}}">Profile</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{{url_for('name')}}">Name</a>
+            <a class="nav-link" href="{{url_for('test_pw')}}">Name</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{url_for('add_user')}}">User</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">History</a>
           </li>
         </ul>
-        <form class="d-flex" role="search">
-          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+        <form class="d-flex" role="search" action = "/quote" method="POST">
+          <input class="form-control me-2" type="text" placeholder="Search" aria-label="Search" name = 'symbol'>
           <button class="btn btn-outline-light" type="submit">Search</button>
         </form>
       </div>
