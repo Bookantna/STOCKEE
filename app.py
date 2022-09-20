@@ -1,13 +1,14 @@
+import os
 from sqlite3 import Timestamp
 from flask import Flask,render_template,url_for,request,redirect,flash
 from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime
+from datetime import datetime , date
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField ,IntegerField,EmailField,PasswordField , BooleanField, ValidationError
 from wtforms.validators import DataRequired, EqualTo, Length
 from flask_migrate import Migrate
-import os
+from wtforms.widgets import TextArea
 from helper import get_file_contents, lookup
 
 app = Flask(__name__)
@@ -15,15 +16,32 @@ app.config['SECRET_KEY'] = "1111"
 
 if not get_file_contents('Api_key.txt'): # IEX api_key I stored my key in txt file if it is not found raise exception 
     raise Exception("Missing API_KEY")
-    
+
 #My old database
 #app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
 #My new database
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:password123@localhost/our_users'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_BINDS'] = {"financial":'sqlite:///financial.db'}
 db = SQLAlchemy(app)
 migrate = Migrate(app, db) # To migrate use command flask db migrate -m 'Your MM' 
                            # flask db upgrade for changes.... migrate uses for when you want to add something to database 
+
+# Blog post model 
+class Posts(db.Model):
+    id = db.Column(db.Integer, primary_key = True, nullable=False)
+    title = db.Column(db.String(255))
+    post = db.Column(db.Text)
+    author = db.Column(db.String(255))
+    date = db.Column(db.DateTime, default = datetime.utcnow)
+    slug = db.Column(db.String(255))
+
+class PostForm(FlaskForm):
+    title = StringField("Title",validators=[DataRequired()])
+    content = StringField("Content",validators=[DataRequired()])
+    author = StringField("Author",validators=[DataRequired()])
+    slug = StringField("Slug",validators=[DataRequired()])
+    submit = SubmitField("Submit")
 
 
 class users(db.Model):
@@ -71,6 +89,7 @@ class UserForm(FlaskForm):
 class NamerForm(FlaskForm):
     name = StringField("What's your name",validators=[DataRequired()])
     submit = SubmitField("Submit")
+
 # Create a form buy stock
 class buy(FlaskForm):
     symbol = StringField("Symbol",validators=[DataRequired()])
@@ -189,7 +208,32 @@ def delete(id):
 
     except:
         flash("Oops there was an error deleting")
+@app.route("/add_post", methods = ["POST","GET"])
+def add_post():
+    form = PostForm()
 
+    if form.validate_on_submit():
+        post = Posts(title = form.title.data, content = form.content.data, author = form.author.data, slug = form.slug.data)
+        # clear form
+        form.title.data = ''
+        form.content.data = ''
+        form.author.data = ''
+
+        # add post data to database
+        db.session.add(post)
+        db.session.commit()
+        flash("Blog post Submitted Successfully")
+    return render_template('add_post.html', form = form)
+
+# Json Api 
+@app.route('/date')
+def get_current_date():
+    favorite_pizza = {
+        "John" : "Pepperoni",
+        "Mary" : "Cheese",
+        "Lace" : "PineApple"
+    }
+    return favorite_pizza
 #error pages
 @app.errorhandler(404)
 def page_not_found(e):
