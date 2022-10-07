@@ -1,0 +1,42 @@
+{% extends 'layout.html'%}
+{% block body%}
+
+<div class="card">
+    <div class="card-header bg">
+        <h1>Your shares own</h1> <strong>User: </strong>{{current_user.name}}
+    </div>
+    <div class="card-body">
+        {% for share in sum_shares_owned %}
+        {% if share.sum_shares <= 0 %}
+
+        {% else %}
+            <strong>{{share.symbol}}</strong> : {{share.sum_shares}}<br/>
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>
+
+<h2>History</h2>
+<table class="table table-dark table-striped table-hover">
+    <tr>
+        <th>purchase_id</th>
+        <th>shares</th>
+        <th>symbol</th>
+        <th>status</th>
+        <th>price</th>
+        <th>date_time</th>
+    </tr>
+{% for trader in trader %}
+    <tr>
+        <td>{{ trader.id }}</td>
+        <td>{{ trader.shares }}</td>
+        <td>{{ trader.symbol }}</td>
+        <td>{{ trader.status }}</td>
+        <td>{{ trader.cost }}</td>
+        <td>{{ trader.date_time }}</td>
+    </tr>
+{% endfor %}
+<br/>
+</table>
+
+{% endblock %}

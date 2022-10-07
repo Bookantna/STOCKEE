@@ -1,0 +1,21 @@
+{% extends "layout.html"%}
+{% block body %}
+
+<center>
+    <a href = "{{url_for('index')}}"><img src="{{url_for('static', filename = 'images/sample.png')}}" width="50%" height="50%"></a>
+</center>
+<br/>
+<br/>
+<br/>
+    <div class="shadow-lg p-3 mb-5 bg-body rounded col-8 position-relative top-50 start-50 translate-middle">
+        <div>
+            <p>
+                $ git config --global user.name "Your Name"<br/>
+                $ git config --global user.email "you@youraddress.com"<br/>
+                $ git config --global push.default matching<br/>
+                $ git config --global alias.co checkout<br/>
+                $ git init
+            </p>
+        </div>
+    </div>
+{% endblock %}

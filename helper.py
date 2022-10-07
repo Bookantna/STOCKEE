@@ -21,7 +21,7 @@ def lookup(symbol):
     # Contact API
     try:
         api_key = get_file_contents('Api_key.txt')
-        url = f"https://cloud.iexapis.com/stable/stock/{urllib.parse.quote_plus(symbol)}/quote?token={api_key}"
+        url = f"https://cloud.iexapis.com/stable/stock/{urllib.parse.quote_plus(str(symbol))}/quote?token={api_key}"
         response = requests.get(url)
         response.raise_for_status()
     except requests.RequestException:

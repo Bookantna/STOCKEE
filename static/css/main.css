@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Gemunu+Libre:wght@200;300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Gemunu+Libre:wght@200;300&family=Kanit:ital,wght@0,400;1,100;1,900&display=swap');
+
 h1 {
     color:darkblue;
     font-size:50px;
@@ -7,4 +10,24 @@ body {
 }
 #demo {
     font-size:35px;
+}
+#text-color{
+    color:darkblue;
+}
+#head_name{
+    color:Black;
+    font-family: 'Gemunu Libre', sans-serif;
+    font-size: 108px;
+}
+.paragraph{
+    font-family: 'Kanit', sans-serif;
+    font-size: 18px;
+}
+.text_font{
+    color:Black;
+    font-family: 'Kanit', sans-serif;
+    font-size: 108px;
+}
+.head_name{
+    font-family: 'Gemunu Libre', sans-serif;
 }

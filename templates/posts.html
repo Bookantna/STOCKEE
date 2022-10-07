@@ -1,0 +1,47 @@
+{% extends 'layout.html'%}
+
+{% block head %}
+
+{% endblock%}
+
+{% block body %}
+{% for message in get_flashed_messages() %}
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+{% endfor %}
+
+<center><h1>Blog post</h1></center>
+<br/>
+{% for post in posts%}
+    {% if current_user.id == post.poster.id %}
+    <div class="shadow p-3 mb-5 bg-body rounded">
+        <h2><a href="{{url_for('post', id = post.id)}}" style="text-decoration: none" id = 'text-color' >{{post.title}}</a></h2> 
+        <small>By: {{ post.poster.name }} | {{post.date}}</small>
+        <br/>
+        <br/>
+        <p>{{post.content}}</p>
+        <a href="{{url_for('post', id = post.id)}}" class="btn btn-outline-warning btn-sm">View Post</a>
+        <a href="{{url_for('edit_post', id = post.id)}}" class="btn btn-outline-warning btn-sm">Edit Post</a>
+        <a href="{{url_for('delete_post', id = post.id)}}" class="btn btn-outline-danger btn-sm">Delete Post</a>
+        <br/>
+        <br/>
+    </div>
+    <br/>
+    {% else %}
+    <div class="shadow p-3 mb-5 bg-body rounded">
+        <h2><a href="{{url_for('post', id = post.id)}}" style="text-decoration: none" id = 'text-color' >{{post.title}}</a></h2> 
+        <small>By: {{ post.poster.name }} | {{post.date}}</small>
+        <br/>
+        <br/>
+        <p>{{post.content}}</p>
+        <a href="{{url_for('post', id = post.id)}}" class="btn btn-outline-warning btn-sm">View Post</a>
+        <br/>
+        <br/>
+    </div>
+    <br/>
+    {% endif %}
+{% endfor %}
+
+{% endblock %}

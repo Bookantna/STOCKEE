@@ -21,30 +21,35 @@
     
     <script src="{{url_for('static',filename = 'js/myfile.js')}}"></script>
     {% else %}
-    <h1>Add Blog post!</h1>
-    <br/>
-    <form method = "POST">
-        <div class="shadow p-3 mb-5 bg-body rounded">
-        {{ form.hidden_tag() }}
 
-        {{ form.title.label(class="form-label") }}
-        {{ form.title(class="form-control") }}
+        {% if current_user.is_authenticated%}
+        <h1>Add Blog post!</h1>
         <br/>
+        <form method = "POST">
+            <div class="shadow p-3 mb-5 bg-body rounded">
+            {{ form.hidden_tag() }}
 
-        {{ form.author.label(class="form-label") }}
-        {{ form.author(class="form-control") }}
-        <br/>
+            {{ form.title.label(class="form-label") }}
+            {{ form.title(class="form-control") }}
+            <br/>
 
-        {{ form.slug.label(class="form-label") }}
-        {{ form.slug(class="form-control") }}
-        <br/>
-        
-        {{ form.content.label(class="form-label") }}
-        {{ form.content(class="form-control") }}
-        <br/>
-        <br/>
-        {{ form.submit(class="btn btn-dark") }}
-        </div>
-    </form>
+
+            {{ form.slug.label(class="form-label") }}
+            {{ form.slug(class="form-control") }}
+            <br/>
+            
+            {{ form.content.label(class="form-label") }}
+            {{ form.content(class="form-control" , rows = "6") }}
+            <br/>
+            <br/>
+            {{ form.submit(class="btn btn-dark") }}
+            </div>
+        </form>
+        {% else %}
+        <h2>Must be Logged In ....</h2>
+        <p>Sorry, You must be logged in to access this page!</p>
+        <button class="btn btn-dark"><a href="{{url_for('login')}}" style="text-decoration: none; color: white;">Login here</a></button>
+        {% endif %}
+
     {% endif %}
 {% endblock%}

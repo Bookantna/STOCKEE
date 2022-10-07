@@ -1,0 +1,37 @@
+{% extends 'layout.html'%}
+
+{% block head %}
+
+{% endblock%}
+
+{% block body %}
+{% for message in get_flashed_messages() %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+{% endfor %}
+
+<br/>
+    <form method = "POST">
+        <div class="shadow p-3 mb-5 bg-body rounded">
+        {{ form.hidden_tag() }}
+
+        {{ form.title.label(class="form-label") }}
+        {{ form.title(class="form-control") }}
+        <br/>
+
+        {{ form.slug.label(class="form-label") }}
+        {{ form.slug(class="form-control") }}
+        <br/>
+        
+        {{ form.content.label(class="form-label") }}
+        {{ form.content(class="form-control" , rows = "6") }}
+        <br/>
+        <br/>
+        {{ form.submit(class="btn btn-dark") }}
+        </div>
+    </form>
+<a href="{{url_for('posts')}}" class="btn btn-outline-warning btn-sm">Back to Blog</a>
+<br/>
+{% endblock %}

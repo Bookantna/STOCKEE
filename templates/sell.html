@@ -1,0 +1,38 @@
+{% extends 'layout.html'%}
+{% block body %}
+
+<div class="card">
+    <div class="card-header bg">
+        <h1>Your shares own</h1> <strong>User: </strong>{{current_user.name}}
+    </div>
+    <div class="card-body">
+        {% for share in sum_shares_owned %}
+        {% if share.sum_shares <= 0 %}
+
+        {% else %}
+            <strong>{{share.symbol}}</strong> : {{share.sum_shares}}<br/>
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>
+
+<div class = 'container themed-container text-center mb-3'>
+    <form method = "POST">
+        <div class="shadow p-3 mb-5 bg-body rounded">
+            
+            {{ form.hidden_tag() }}
+
+            <h1>{{ form.symbol.label(class="form-label") }}</h1>
+            {{ form.symbol(class="form-control mx-auto w-auto", placeholder="Symbol") }}
+            <br/>
+                
+            <h1>{{ form.shares.label(class="form-label") }}</h1>
+            {{ form.shares(class="form-control mx-auto w-auto", placeholder="shares", min = '1') }}
+            <br/>
+            {{ form.submit(class="btn btn-dark") }}
+
+        </div>
+    </form>
+</div>
+
+{% endblock %}

@@ -1,0 +1,73 @@
+{% extends 'layout.html'%}
+
+{% block head %}
+
+{% endblock%}
+
+{% block body %}
+{% for message in get_flashed_messages() %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+{% endfor %}
+
+
+<br/>
+<div class="card">
+    <div class="card-header bg">
+        <h1>Dashboard</h1> <p>You are Logged in as <strong>{{current_user.name}}</strong> !!</p>
+    </div>
+    <div class="card-body">
+        <strong>ID : </strong>{{current_user.id}}<br/>
+        <strong>Name : </strong>{{current_user.name}}<br/>
+        <strong>Username : </strong>{{current_user.username}}<br/>
+        <strong>Money : </strong>{{current_user.money}}$<br/>
+        <strong>Email : </strong>{{current_user.email}}<br/>
+        <strong>Register date : </strong>{{current_user.date_added}}<br/>
+        <br/>
+        
+        <div class="mb-3">
+            <label for="formFile" class="form-label"><strong>Profile</strong></label>
+            <input class="form-control" type="file" id="formFile">
+        </div>
+        
+        <br/>
+        <a href ="{{url_for('logout')}}" class="btn btn-outline-secondary btn-sm">logout</a>
+        <a href = '{{url_for("update", id = current_user.id)}}' class="btn btn-outline-warning btn-sm" style="color:black;">Update profile</a>
+        <a href = "{{url_for('delete',id = current_user.id)}}" class ="btn btn-outline-danger btn-sm">Delete</a>
+    </div>
+</div>
+
+  <br/>
+  <br/>
+
+  <div class="card">
+        <div class="card-header bg">
+            Update Profile
+        </div>
+        <div class="card-body">
+            <form action = "/dashboard" method = "POST">
+                {{ form.hidden_tag() }}
+                
+                <strong>{{ form.name.label(class="form-label") }}</strong>
+                {{ form.name(class="form-control", value = name_to_update.name) }}
+                <br/>
+        
+                <strong>{{ form.username.label(class="form-label") }}</strong>
+                {{ form.username(class="form-control", value = name_to_update.username) }}
+                <br/>
+        
+                <strong>{{ form.email.label(class="form-label") }}</strong>
+                {{ form.email(class="form-control", value = name_to_update.email) }}
+                <br/>
+        
+                {{ form.submit(class="btn btn-dark") }} 
+                </div>
+        </div>
+    </div>
+
+<br/>
+<br/>
+
+{% endblock%}

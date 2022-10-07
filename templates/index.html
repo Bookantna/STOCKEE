@@ -5,5 +5,29 @@
 {% endblock%}
 
 {% block body %}
-<h1>Hello, My new projects</h1>
-{% endblock%}
+{% for message in get_flashed_messages() %}
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+{% endfor %}
+
+<center>
+    <h1 id = 'head_name'>STOCKEE</h1>
+
+    <div class="shadow-lg p-3 mb-5 bg-body rounded col-lg-8">
+        <center>
+            <br/>
+            <p class = 'paragraph'>This is my project for practicing trading every user will get 10000$ as a money starter.<br/>
+                 You can buy any stock that is available in the market. <br/>
+                 You can share your progress on the Blog Post page (Be civilized). 
+            </p>
+            <div style="width:480px"><iframe allow="fullscreen" frameBorder="0" height="270" src="https://giphy.com/embed/vzI0cmLIXg5pdEmNEb/video" width="480"></iframe></div>
+            <p style="color:red" class = 'paragraph'>#Noted: STOCKER is created for education, and this is not a real trade. It is just demo trading.</p>
+            <br/>
+        </center>
+    </div>
+</center>
+
+
+{% endblock %}

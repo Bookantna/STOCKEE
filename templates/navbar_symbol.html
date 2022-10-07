@@ -6,12 +6,13 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link text_font" href="{{url_for('test_pw')}}">Name</a>
+            </li> 
+
             {% if current_user.is_authenticated %}
             <li class="nav-item">
-              <a class="nav-link text_font" href="{{url_for('quote')}}">Trade</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link text_font" href="{{url_for('sell')}}">Sell</a>
+              <a class="nav-link text_font" href="{{url_for('user',name = 'Taron')}}">Profile</a>
             </li>
             <li class="nav-item">
               <a class="nav-link text_font" href="{{url_for('posts')}}">Posts</a>
@@ -23,7 +24,7 @@
               <a class="nav-link text_font" href="{{url_for('dashboard')}}">Dashboard</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link text_font" href="{{url_for('transaction')}}">Transaction</a>
+              <a class="nav-link text_font" href="#">History</a>
             </li>
             <li class="nav-item">
               <a class="nav-link text_font" href="{{url_for('logout')}}">Logout : {{ current_user.name }}</a>
@@ -37,9 +38,8 @@
             </li>
             {% endif %}
         </ul>
-        <form class="d-flex" role="search" action = "{{url_for('search')}}" method="POST">
-          {{ form.hidden_tag() }}
-          <input class="form-control me-2 text_font" type="text" placeholder="Search" aria-label="Search" name = 'searched'>
+        <form class="d-flex" role="search" action = "/quote" method="POST">
+          <input class="form-control me-2 text_font" type="text" placeholder="Symbol Search" aria-label="Search" name = 'symbol'>
           <button class="btn btn-outline-light text_font" type="submit">Search</button>
         </form>
         

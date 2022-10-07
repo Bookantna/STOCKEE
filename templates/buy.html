@@ -1,0 +1,71 @@
+{% extends 'layout.html'%}
+
+{% block head %}
+<title>Trade</title>
+{% endblock %}
+
+{% block body %}
+{% for message in get_flashed_messages() %}
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+{% endfor %}
+
+<table class="table table-dark table-striped table-hover">
+    <tr>
+        <th>Symbol</th>
+        <th>Company Name</th>
+        <th>Price</th>
+    </tr>
+    <tr>
+        <td>{{ stocks["symbol"] }}</td>
+        <td>{{ stocks["name"] }}</td>
+        <td>{{ stocks["price"] }}$</td>
+    </tr>
+</table>
+
+<div class = 'container themed-container text-center mb-3'>
+    <form method = "POST">
+        <div class="shadow p-3 mb-5 bg-body rounded">
+            
+            {{ form.hidden_tag() }}
+                
+            <h1>{{ form.shares.label(class="form-label") }}</h1>
+            {{ form.shares(class="form-control mx-auto w-auto", placeholder="shares", min = '1') }}
+            <br/>
+            {{ form.submit(class="btn btn-dark") }}
+
+        </div>
+    </form>
+</div>
+<table class="table table-dark table-striped table-hover">
+    <tr>
+        <th>purchase_id</th>
+        <th>user_id</th>
+        <th>shares</th>
+        <th>symbol</th>
+        <th>status</th>
+        <th>price</th>
+        <th>date_time</th>
+    </tr>
+{% for history in history %}
+    <tr>
+        <td>{{ history.id }}</td>
+        <td>{{ history.trader.id }}</td>
+        <td>{{ history.shares }}</td>
+        <td>{{ history.symbol }}</td>
+        <td>{{ history.status }}</td>
+        <td>{{ history.cost }}</td>
+        <td>{{ history.date_time }}</td>
+    </tr>
+{% endfor %}
+<br/>
+</table>
+
+
+<br/>
+
+<center><iframe src="https://giphy.com/embed/rM0wxzvwsv5g4" width="480" height="270" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/mit-graph-banking-rM0wxzvwsv5g4">via GIPHY</a></p></center>
+
+{% endblock %}
