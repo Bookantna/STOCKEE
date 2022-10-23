@@ -6,6 +6,7 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
             {% if current_user.is_authenticated %}
             <li class="nav-item">
               <a class="nav-link text_font" href="{{url_for('quote')}}">Trade</a>
@@ -25,10 +26,17 @@
             <li class="nav-item">
               <a class="nav-link text_font" href="{{url_for('transaction')}}">Transaction</a>
             </li>
+
+            {% if current_user.id == 11 %}
+            <li class="nav-item">
+              <a class="nav-link text_font" href="{{url_for('admin')}}">Admin</a>
+            </li>
+            {% endif %}
+
             <li class="nav-item">
               <a class="nav-link text_font" href="{{url_for('logout')}}">Logout : {{ current_user.name }}</a>
             </li>
-            {% else%}
+            {% else %}
             <li class="nav-item">
               <a class="nav-link text_font" href="{{url_for('login')}}">Login</a>
             </li>

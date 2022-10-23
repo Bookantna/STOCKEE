@@ -1,8 +1,9 @@
 {% extends 'layout.html'%}
 
 {% block head %}
-
 {% endblock%}
+
+{{ ckeditor.load }}
 
 {% block body %}
 {% for message in get_flashed_messages() %}
@@ -45,6 +46,9 @@
             {{ form.submit(class="btn btn-dark") }}
             </div>
         </form>
+            {{ ckeditor.load() }}
+            {{ ckeditor.config(name='content') }}
+
         {% else %}
         <h2>Must be Logged In ....</h2>
         <p>Sorry, You must be logged in to access this page!</p>

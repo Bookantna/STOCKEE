@@ -7,11 +7,17 @@ from datetime import datetime , date
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_migrate import Migrate
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
+from flask_ckeditor import CKEditor
 from helper import get_file_contents, lookup
 from webform import PostForm, LoginForm, UserForm, NamerForm, buyForm, PasswordForm, SearchForm, QuoteForm, SellForm
+from werkzeug.utils import secure_filename
+import uuid as uuid
+
+
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = "1111"
+ckeditor = CKEditor(app)
 
 if not get_file_contents('Api_key.txt'): # IEX api_key I stored my key in txt file if it is not found raise exception 
     raise Exception("Missing API_KEY")
@@ -19,9 +25,18 @@ if not get_file_contents('Api_key.txt'): # IEX api_key I stored my key in txt fi
 #My old database
 #app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
 #app.config['SQLALCHEMY_BINDS'] = {"financial":'sqlite:///financial.db'}
+
 #My new database
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:password123@localhost/our_users'
+#heroku database
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://pmlaaarovymdwx:ba29b0b450e6f4e30838479f0030fb266ec75375912b29e85ab02ac687a4d0ab@ec2-52-70-45-163.compute-1.amazonaws.com:5432/deh71f0qqb2083'
+
+#MySql database 
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:password123@localhost/our_users'
+
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+UPLOAD_FOLDER = 'static/images/'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db) # To migrate use command flask db migrate -m 'Your MM' 
@@ -307,9 +322,24 @@ def dashboard():
     id = current_user.id
     name_to_update = users.query.get_or_404(id)
     if request.method == 'POST':
-        name_to_update.name = request.form['name']
+        name_to_update.name = request.form['name'] # form.name.data
         name_to_update.username = request.form['username']
         name_to_update.email = request.form['email']
+        name_to_update.profile_pic = request.files['profile_pic']
+        name_to_update.about_author = request.form['about_author']
+
+        # grab image name 
+        pic_filename = secure_filename(name_to_update.profile_pic.filename)
+
+        # set uuid 
+        pic_name = str(uuid.uuid1()) + '_' + pic_filename
+
+        #save image
+        #name_to_update.profile_pic.save(os.path.join(app.config['UPLOAD_FOLDER'], pic_name))
+
+        # save pic_name to the database 
+        name_to_update.profile_pic = pic_name
+
         try:
             db.session.commit()
             flash('User Updated Successfully')
@@ -338,6 +368,15 @@ def search():
         posts = posts.order_by(Posts.title).all()
         return render_template('search.html',form = form, searced = post_searched, posts = posts)
 
+@app.route('/admin')
+@login_required
+def admin():
+    id = current_user.id
+    if id == 11:
+         return render_template('admin.html')
+    else:
+        flash("You are not allowed to access this page !!")
+        return redirect(url_for('dashboard'))
 # Json Api 
 @app.route('/date')
 def get_current_date():
@@ -367,7 +406,7 @@ def Internal_error(e):
 class Posts(db.Model):
     id = db.Column(db.Integer, primary_key = True, nullable=False)
     title = db.Column(db.String(255))
-    content = db.Column(db.Text)
+    content = db.Column(db.Text())
     #author = db.Column(db.String(255))
     date = db.Column(db.DateTime, default = datetime.utcnow)
     slug = db.Column(db.String(255))
@@ -380,8 +419,10 @@ class users(db.Model, UserMixin):
     username = db.Column(db.String(255), nullable=False, unique=True)
     name = db.Column(db.String(255), nullable=False)
     email = db.Column(db.String(255), nullable=False, unique=True)
+    about_author = db.Column(db.Text(), nullable=True)
     password_hash = db.Column(db.String(259), nullable=False)
     money = db.Column(db.Integer, nullable=False, default = 10000)
+    profile_pic = db.Column(db.String(), nullable=True)
     favorite_color = db.Column(db.String(255)) # Delete later
     date_added = db.Column(db.DateTime,default=datetime.utcnow, nullable=False)
     # user can have many posts
@@ -416,3 +457,7 @@ class financial(db.Model):
     
 if __name__ == '__main__':
     app.run(debug=True)
+
+
+# tell heroku we have a database 
+# heroku addons:create heroku-postgresql:hobby-dev --app stockeesite
