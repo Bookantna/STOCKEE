@@ -188,20 +188,25 @@ def sell():
     return render_template('sell.html',form = form, sum_shares_owned = sum_shares_owned)
 
 @app.route("/delete/<int:id>", methods = ["GET", "POST"])
+@login_required
 def delete(id):
-    username = None
-    email = None
-    form = UserForm()
-    user_to_delete = users.query.get_or_404(id)
-    try:
-        db.session.delete(user_to_delete)
-        db.session.commit()
-        flash("User Deleted Successfully")
-        our_users = users.query.order_by(users.date_added)
-        return render_template('add_user.html',form = form, username = username, email = email, our_users = our_users)
+    if id == current_user.id:
+        username = None
+        email = None
+        form = UserForm()
+        user_to_delete = users.query.get_or_404(id)
+        try:
+            db.session.delete(user_to_delete)
+            db.session.commit()
+            flash("User Deleted Successfully")
+            our_users = users.query.order_by(users.date_added)
+            return render_template('add_user.html',form = form, username = username, email = email, our_users = our_users)
 
-    except:
-        flash("Oops there was an error deleting")
+        except:
+            flash("Oops there was an error deleting")
+    else:
+        flash("Sorry you can't delete other user")
+        return redirect(url_for('dashboard'))
 
 @app.route("/add_post", methods = ["POST","GET"])
 @login_required
