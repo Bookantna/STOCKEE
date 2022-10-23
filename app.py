@@ -19,9 +19,6 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = "1111"
 ckeditor = CKEditor(app)
 
-if not get_file_contents('Api_key.txt'): # IEX api_key I stored my key in txt file if it is not found raise exception 
-    raise Exception("Missing API_KEY")
-
 #My old database
 #app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
 #app.config['SQLALCHEMY_BINDS'] = {"financial":'sqlite:///financial.db'}
