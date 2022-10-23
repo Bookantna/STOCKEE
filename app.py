@@ -168,14 +168,14 @@ def buy(symbol):
 @login_required
 def transaction():
     trader =  financial.query.filter(financial.trader_id == current_user.id)
-    sum_shares_owned = db.session.execute("SELECT SUM(shares) as sum_shares ,symbol FROM financial where trader_id = 12 Group by symbol;")
+    sum_shares_owned = db.session.execute(f"SELECT SUM(shares) as sum_shares ,symbol FROM financial where trader_id = {current_user.id} Group by symbol;")
     return render_template('transaction.html',trader = trader, sum_shares_owned = sum_shares_owned)
 
 @app.route("/sell", methods = ["GET", "POST"])
 @login_required
 def sell():
     form = SellForm()
-    sum_shares_owned = db.session.execute("SELECT SUM(shares) as sum_shares ,symbol FROM financial where trader_id = 12 Group by symbol;")
+    sum_shares_owned = db.session.execute(f"SELECT SUM(shares) as sum_shares ,symbol FROM financial where trader_id = {current_user.id} Group by symbol;")
     if form.validate_on_submit():
         stocks = lookup(form.symbol.data)
         id = current_user.id
