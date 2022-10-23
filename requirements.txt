@@ -21,6 +21,7 @@ MarkupSafe==2.1.1
 mysql-connector-python==8.0.30
 mysql-connector-python-rf==2.2.2
 protobuf==3.20.1
+psycopg2-binary==2.9.4
 pycparser==2.21
 PyMySQL==1.0.2
 requests==2.28.1
