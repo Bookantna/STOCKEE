@@ -369,7 +369,7 @@ def search():
 @login_required
 def admin():
     id = current_user.id
-    if id == 11:
+    if id == 1:
          return render_template('admin.html')
     else:
         flash("You are not allowed to access this page !!")
