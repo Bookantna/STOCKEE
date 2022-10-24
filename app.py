@@ -176,15 +176,23 @@ def transaction():
 def sell():
     form = SellForm()
     sum_shares_owned = db.session.execute(f"SELECT SUM(shares) as sum_shares ,symbol FROM financial where trader_id = {current_user.id} Group by symbol;")
+
     if form.validate_on_submit():
         stocks = lookup(form.symbol.data)
-        id = current_user.id
-        sell = financial(trader_id = id, symbol = form.symbol.data, status = 'SELL', cost = float(form.shares.data * stocks['price']), shares = int(-form.shares.data))
-        user = users.query.get_or_404(id)
-        user.money = float(user.money) + float(form.shares.data * stocks['price'])
-        db.session.add(sell)
-        db.session.add(user)
-        db.session.commit()
+        shares_count = db.session.execute(f"SELECT SUM(shares) as sum_shares FROM financial where trader_id = {current_user.id} AND symbol = '{(form.symbol.data).upper()}' Group by symbol;")
+        for shares_count in shares_count:
+            if shares_count['sum_shares'] >= form.shares.data:
+                id = current_user.id
+                sell = financial(trader_id = id, symbol = stocks['symbol'], status = 'SELL', cost = float(form.shares.data * stocks['price']), shares = int(-form.shares.data))
+                user = users.query.get_or_404(id)
+                user.money = float(user.money) + float(form.shares.data * stocks['price'])
+                db.session.add(sell)
+                db.session.add(user)
+                db.session.commit()
+                flash("Your transaction has been completed !!")
+                return redirect(url_for('sell',form = form, sum_shares_owned = sum_shares_owned)) 
+            else:
+                flash("Oops something went wrong !!!")
     return render_template('sell.html',form = form, sum_shares_owned = sum_shares_owned)
 
 @app.route("/delete/<int:id>", methods = ["GET", "POST"])

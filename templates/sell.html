@@ -1,6 +1,17 @@
 {% extends 'layout.html'%}
 {% block body %}
 
+{% for message in get_flashed_messages() %}
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+{% endfor %}
+
+{% for shares_count in shares_count %}
+<h1>Special : {{shares_count.sum_shares}}</h1>
+111
+{% endfor %}
 <div class="card">
     <div class="card-header bg">
         <h1>Your shares own</h1> <strong>User: </strong>{{current_user.name}}
