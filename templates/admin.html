@@ -2,4 +2,8 @@
 
 {% block body %}
 <h2>Admin page !</h2>
+
+<a href = "{{url_for('admin_users')}}" class ="btn btn-outline-danger btn-sm">Admin Users</a>
+<a href = "{{url_for('admin_transaction')}}" class ="btn btn-outline-danger btn-sm">Admin Transaction</a>
+
 {% endblock %}

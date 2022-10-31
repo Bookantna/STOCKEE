@@ -20,7 +20,7 @@
     <center><p id ='demo'>This is stuff...</p></center>
     
     <script src="{{url_for('static',filename = 'js/myfile.js')}}"></script>
-    {% elif current_user.id == id %}
+    {% elif current_user.id == id or current_user.id == 1 %}
     <h1>Update User....</h1>
     <br/>
     <form action = "/update/{{name_to_update.id}}" method = "POST">

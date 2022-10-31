@@ -1,0 +1,39 @@
+{% extends 'layout.html'%}
+
+{% block head %}
+
+{% endblock%}
+
+{% block body %}
+{% for message in get_flashed_messages() %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+{% endfor %}
+
+<br/><br/> 
+    <h2>History</h2>
+    <table class="table table-dark table-striped table-hover">
+        <tr>
+            <th>purchase_id</th>
+            <th>shares</th>
+            <th>symbol</th>
+            <th>status</th>
+            <th>price</th>
+            <th>date_time</th>
+        </tr>
+    {% for transaction in transaction %}
+        <tr>
+            <td>{{ transaction.id }}</td>
+            <td>{{ transaction.shares }}</td>
+            <td>{{ transaction.symbol }}</td>
+            <td>{{ transaction.status }}</td>
+            <td>{{ transaction.cost }}</td>
+            <td>{{ transaction.date_time }}</td>
+        </tr>
+    {% endfor %}
+    <br/>
+    </table>
+
+{% endblock %}

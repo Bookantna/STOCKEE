@@ -109,8 +109,8 @@ def add_user():
         form.email.data = ''
         form.password_hash.data = ''
         flash("User Added Successfully")
-    our_users = users.query.order_by(users.date_added)
-    return render_template('add_user.html',form = form, username = username, email = email, our_users = our_users)
+
+    return render_template('add_user.html',form = form, username = username, email = email)
 
 @app.route('/update/<int:id>', methods = ['POST','GET'])
 @login_required
@@ -148,7 +148,6 @@ def quote():
 def buy(symbol):
     stocks = lookup(symbol)
     form = buyForm()
-    history = financial.query.order_by(financial.date_time)
     if form.validate_on_submit():
         id = current_user.id
         buy = financial(trader_id = id, symbol = symbol, status = 'BUY', cost = float(form.shares.data * stocks['price']), shares = form.shares.data)
@@ -162,7 +161,7 @@ def buy(symbol):
             db.session.add(buy)
             db.session.commit()
             flash("Your transaction has been completed !!")
-    return render_template('buy.html', history = history,stocks = stocks,form = form)
+    return render_template('buy.html',stocks = stocks,form = form)
 
 @app.route("/transaction", methods = ["GET", "POST"])
 @login_required
@@ -198,7 +197,7 @@ def sell():
 @app.route("/delete/<int:id>", methods = ["GET", "POST"])
 @login_required
 def delete(id):
-    if id == current_user.id:
+    if id == current_user.id or id == current_user.id == 1:
         username = None
         email = None
         form = UserForm()
@@ -387,6 +386,29 @@ def admin():
     else:
         flash("You are not allowed to access this page !!")
         return redirect(url_for('dashboard'))
+
+@app.route('/admin/users')
+@login_required
+def admin_users():
+    id = current_user.id
+    our_users = users.query.order_by(users.date_added)
+    if id == 1:
+         return render_template('admin_users.html', our_users = our_users)
+    else:
+        flash("You are not allowed to access this page !!")
+        return redirect(url_for('dashboard'))
+
+@app.route('/admin/transaction')
+@login_required
+def admin_transaction():
+    id = current_user.id
+    transaction = financial.query.order_by(financial.date_time)
+    if id == 1:
+         return render_template('admin_transaction.html', transaction = transaction)
+    else:
+        flash("You are not allowed to access this page !!")
+        return redirect(url_for('dashboard'))
+
 # Json Api 
 @app.route('/date')
 def get_current_date():

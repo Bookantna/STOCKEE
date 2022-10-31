@@ -39,30 +39,6 @@
         </div>
     </form>
 </div>
-<table class="table table-dark table-striped table-hover">
-    <tr>
-        <th>purchase_id</th>
-        <th>user_id</th>
-        <th>shares</th>
-        <th>symbol</th>
-        <th>status</th>
-        <th>price</th>
-        <th>date_time</th>
-    </tr>
-{% for history in history %}
-    <tr>
-        <td>{{ history.id }}</td>
-        <td>{{ history.trader.id }}</td>
-        <td>{{ history.shares }}</td>
-        <td>{{ history.symbol }}</td>
-        <td>{{ history.status }}</td>
-        <td>{{ history.cost }}</td>
-        <td>{{ history.date_time }}</td>
-    </tr>
-{% endfor %}
-<br/>
-</table>
-
 
 <br/>
 

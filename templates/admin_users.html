@@ -1,0 +1,40 @@
+{% extends 'layout.html'%}
+
+{% block head %}
+
+{% endblock%}
+
+{% block body %}
+{% for message in get_flashed_messages() %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+{% endfor %}
+
+<br/><br/> 
+<h2>Users list</h2>
+    <table class="table table-dark table-striped table-hover">
+        <tr>
+            <th>id</th>
+            <th>username</th>
+            <th>name</th>
+            <th>email</th>
+            <th>password_hash</th>
+            <th>Money</th>
+            <th></th>
+        </tr>
+    {% for our_user in our_users %}
+        <tr>
+            <td>{{ our_user.id }}</td>
+            <td> <a href= '{{url_for("update", id = our_user.id)}}'>{{ our_user.username }}</a></td>
+            <td>{{ our_user.name }}</td>
+            <td>{{ our_user.email }}</td>
+            <td>PW:{{our_user.password_hash}}</td>
+            <td>{{our_user.money }}$</td>
+            <td><a href = "{{url_for('delete',id = our_user.id)}}">Delete</a></td>
+        </tr>
+    {% endfor %}
+    <br/>
+    </table>
+{% endblock %}
