@@ -25,10 +25,10 @@ ckeditor = CKEditor(app)
 
 #My new database
 #heroku database
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://pmlaaarovymdwx:ba29b0b450e6f4e30838479f0030fb266ec75375912b29e85ab02ac687a4d0ab@ec2-52-70-45-163.compute-1.amazonaws.com:5432/deh71f0qqb2083'
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://pmlaaarovymdwx:ba29b0b450e6f4e30838479f0030fb266ec75375912b29e85ab02ac687a4d0ab@ec2-52-70-45-163.compute-1.amazonaws.com:5432/deh71f0qqb2083'
 
 #MySql database 
-#app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:password123@localhost/our_users'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:password123@localhost/our_users'
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
