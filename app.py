@@ -483,7 +483,7 @@ class financial(db.Model):
     shares = db.Column(db.Integer, nullable = False)
     symbol = db.Column(db.String(255), nullable=False)
     status = db.Column(db.String(255), nullable=False)
-    cost = db.Column(db.Float, nullable=False)
+    cost = db.Column(db.Float(), nullable=False)
     date_time = db.Column(db.DateTime,default=datetime.utcnow, nullable=False)
     #foreign key to link users (refer to primary key)
     trader_id = db.Column(db.Integer, db.ForeignKey('users.id'))
