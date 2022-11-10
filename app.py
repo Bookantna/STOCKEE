@@ -28,7 +28,8 @@ ckeditor = CKEditor(app)
 #app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://pmlaaarovymdwx:ba29b0b450e6f4e30838479f0030fb266ec75375912b29e85ab02ac687a4d0ab@ec2-52-70-45-163.compute-1.amazonaws.com:5432/deh71f0qqb2083'
 
 #MySql database 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:password123@localhost/our_users'
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:password123@localhost/our_users'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://admin:password123@stockee.cmzuu19ybwsu.ap-northeast-1.rds.amazonaws.com/our_users'
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -438,7 +439,7 @@ def Internal_error(e):
 class Posts(db.Model):
     id = db.Column(db.Integer, primary_key = True, nullable=False)
     title = db.Column(db.String(255))
-    content = db.Column(db.Text())
+    content = db.Column(db.Text(500))
     #author = db.Column(db.String(255))
     date = db.Column(db.DateTime, default = datetime.utcnow)
     slug = db.Column(db.String(255))
@@ -451,10 +452,10 @@ class users(db.Model, UserMixin):
     username = db.Column(db.String(255), nullable=False, unique=True)
     name = db.Column(db.String(255), nullable=False)
     email = db.Column(db.String(255), nullable=False, unique=True)
-    about_author = db.Column(db.Text(), nullable=True)
+    about_author = db.Column(db.Text(500), nullable=True)
     password_hash = db.Column(db.String(259), nullable=False)
     money = db.Column(db.Integer, nullable=False, default = 10000)
-    profile_pic = db.Column(db.String(), nullable=True)
+    profile_pic = db.Column(db.String(500), nullable=True)
     favorite_color = db.Column(db.String(255)) # Delete later
     date_added = db.Column(db.DateTime,default=datetime.utcnow, nullable=False)
     # user can have many posts
@@ -482,7 +483,7 @@ class financial(db.Model):
     shares = db.Column(db.Integer, nullable = False)
     symbol = db.Column(db.String(255), nullable=False)
     status = db.Column(db.String(255), nullable=False)
-    cost = db.Column(db.Float(), nullable=False)
+    cost = db.Column(db.Float, nullable=False)
     date_time = db.Column(db.DateTime,default=datetime.utcnow, nullable=False)
     #foreign key to link users (refer to primary key)
     trader_id = db.Column(db.Integer, db.ForeignKey('users.id'))
