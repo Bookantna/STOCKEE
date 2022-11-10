@@ -478,7 +478,15 @@ class users(db.Model, UserMixin):
     def __repr__(self):
         return '<Task %r> % self.id'
         
-
+class financial(db.Model):
+    id = db.Column(db.Integer, primary_key=True, nullable=False) # transaction id 
+    shares = db.Column(db.Integer, nullable = False)
+    symbol = db.Column(db.String(255), nullable=False)
+    status = db.Column(db.String(255), nullable=False)
+    cost = db.Column(db.Float(), nullable=False)
+    date_time = db.Column(db.DateTime,default=datetime.utcnow, nullable=False)
+    #foreign key to link users (refer to primary key)
+    trader_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     
 if __name__ == '__main__':
     app.run(debug=True)
